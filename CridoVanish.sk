@@ -1,0 +1,31 @@
+command /v [<text>]:
+    permission: crido.vanishadmin
+    permission message: &8» Nie masz uprawnien do tej komendy !
+    aliases: vanish 
+    trigger:
+        if {v::%player%} is not set: 
+            set {v::%player%} to true
+            send "&8» Aktywowano vanisha!"
+            loop all players: 
+                if loop-player don't have permission "crido.vanishshow":
+                    add loop-player to {_g::*}
+            hide player from {_g::*}
+            stop
+        if {v::%player%} is set:
+            clear {v::%player%}
+            send "&8» Zdezaktywowano vanisha"
+            reveal player to all players
+            stop
+
+on pickup:
+    if {v::%player%} is set:
+        cancel event
+
+on damage:
+    if {v::%attacker%} is set:
+        cancel event
+        send "&8» Hej hej hej ! jestes na vanishu wylacz go jak chcesz kogos atakowac !" 
+
+on quit:
+    if {v::%player%} is set:
+        clear {v::%player%}
